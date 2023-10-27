@@ -9,6 +9,6 @@ public interface UserDao {
     User saveUser(User user);
     List<User> getUsers();
     User getUser(int pkId);
-    User getUserByEmailOrUsername(User user);
-    User getUserByCredentials(User user);
+    User getUserByEmailOrUsername(String data);
+    User getUserByCredentials(String user, String pass);
 }
