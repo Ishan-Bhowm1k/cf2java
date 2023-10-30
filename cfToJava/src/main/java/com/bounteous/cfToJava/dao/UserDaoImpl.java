@@ -16,6 +16,11 @@ public class UserDaoImpl implements UserDao{
     UserRepository userRepository;
 
     @Override
+    public User newUser() {
+        return new User();
+    }
+
+    @Override
     public void deleteUser(int pkId) {
         User user = userRepository.findUserByPkId(pkId);
         user.setIsActive(false);

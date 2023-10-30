@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "service")
-public class Service {
+public class ServiceModel {
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

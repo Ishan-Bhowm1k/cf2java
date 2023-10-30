@@ -1,7 +1,7 @@
 package com.bounteous.cfToJava.dao;
 
 import com.bounteous.cfToJava.model.Account;
-import com.bounteous.cfToJava.model.Service;
+import com.bounteous.cfToJava.model.ServiceModel;
 import com.bounteous.cfToJava.repository.AccountRepository;
 import com.bounteous.cfToJava.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +32,16 @@ public class AccountDaoImpl implements AccountDao{
     }
 
     @Override
-    public Service saveService(Service service) {
-        return serviceRepository.save(service);
+    public ServiceModel saveService(ServiceModel serviceModel) {
+        return serviceRepository.save(serviceModel);
     }
 
     @Override
-    public Boolean removeService(Service service) {
-        int id = service.getServiceId();
+    public Boolean removeService(ServiceModel serviceModel) {
+        int id = serviceModel.getServiceId();
         if(serviceRepository.existsByServiceId(id))
         {
-            serviceRepository.delete(service);
+            serviceRepository.delete(serviceModel);
             return true;
         }
         else

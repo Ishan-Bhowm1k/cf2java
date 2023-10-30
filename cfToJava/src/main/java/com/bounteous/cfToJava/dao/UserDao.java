@@ -5,6 +5,7 @@ import com.bounteous.cfToJava.model.User;
 import java.util.List;
 
 public interface UserDao {
+    User newUser();
     void deleteUser(int pkId);
     User saveUser(User user);
     List<User> getUsers();

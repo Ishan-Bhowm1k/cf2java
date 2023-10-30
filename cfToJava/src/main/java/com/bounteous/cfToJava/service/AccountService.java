@@ -1,14 +1,16 @@
-package com.bounteous.cfToJava.dao;
+package com.bounteous.cfToJava.service;
 
 import com.bounteous.cfToJava.model.Account;
 import com.bounteous.cfToJava.model.ServiceModel;
 
 import java.util.List;
 
-public interface AccountDao {
+public interface AccountService {
     List<Account> getAccountList();
     Account getAccount(int customerId);
+    Account newAccount();
     Account saveAccount(Account account);
+    ServiceModel newService();
     ServiceModel saveService(ServiceModel serviceModel);
     Boolean removeService(ServiceModel serviceModel);
     Boolean removeAccount(Account account);

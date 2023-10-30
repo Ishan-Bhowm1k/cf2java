@@ -26,4 +26,8 @@ public class User {
     private Boolean isActive;
     private Date dateCreated;
     private Date dateLastModified;
+
+    public boolean isEmpty() {
+        return (pkId == null);
+    }
 }
