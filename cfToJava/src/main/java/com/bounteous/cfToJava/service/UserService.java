@@ -1,22 +1,23 @@
 package com.bounteous.cfToJava.service;
 
 import com.bounteous.cfToJava.model.User;
+import org.springframework.http.ResponseEntity;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface UserService {
-    String deleteUser(int id);
-    User getUser(int id);
-    User getUserByCredentials(String username,String password);
-    User getUserByEmailOrUsername(User user);
-    List<User> getUsers();
-    String newPassword();
-    User newUser();
-    String save(User user);
-    String isEmailUnique(String email);
-    String isUsernameUnique(String username);
-    String hashPassword(String pass) throws NoSuchAlgorithmException;
-    String validate(User user, String firstName, String lastName, String email, String password, String passwordConfirm);
-    String checkPassword(User user, String currPassword, String newPassword, String retypePassword);
+    ResponseEntity<String> deleteUser(int id);
+    ResponseEntity<User> getUser(int id);
+    ResponseEntity<User> getUserByCredentials(String username,String password);
+    ResponseEntity<User> getUserByEmailOrUsername(String data);
+    ResponseEntity<List<User>> getUsers();
+    ResponseEntity<String> newPassword();
+    ResponseEntity<User> newUser();
+    ResponseEntity<String> save(User user);
+    ResponseEntity<String> isEmailUnique(String email);
+    ResponseEntity<String> isUsernameUnique(String username);
+    ResponseEntity<String> hashPassword(String pass) throws NoSuchAlgorithmException;
+    ResponseEntity<String> validate(User user, String firstName, String lastName, String email, String password, String passwordConfirm);
+    ResponseEntity<String> checkPassword(User user, String currPassword, String newPassword, String retypePassword);
 }

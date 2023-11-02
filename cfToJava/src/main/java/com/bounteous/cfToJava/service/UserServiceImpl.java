@@ -4,13 +4,14 @@ import com.bounteous.cfToJava.dao.UserDao;
 import com.bounteous.cfToJava.model.User;
 import com.bounteous.cfToJava.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Objects;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,90 +23,90 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
     @Override
-    public String deleteUser(int id) {
+    public ResponseEntity<String> deleteUser(int id) {
         User user = userDao.getUser(id);
         if(user.isEmpty())
         {
             userDao.deleteUser(id);
-            return "The user " + user.getFirstName() + " " + user.getLastName() + "has been deleted";
+            return ResponseEntity.status(HttpStatus.OK).body("The user " + user.getName() + "has been deleted");
         }
         else {
-            return "The user could not be deleted";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The user could not be deleted");
         }
     }
 
     @Override
-    public User getUser(int id) {
-        return userDao.getUser(id);
+    public ResponseEntity<User> getUser(int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUser(id));
     }
 
     @Override
-    public User getUserByCredentials(String username, String password) {
-        return userDao.getUserByCredentials(username,password);
+    public ResponseEntity<User> getUserByCredentials(String username, String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUserByCredentials(username,password));
     }
 
     @Override
-    public User getUserByEmailOrUsername(User user) {
-        return null;
+    public ResponseEntity<User> getUserByEmailOrUsername(String data) {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUserByEmailOrUsername(data));
     }
 
     @Override
-    public List<User> getUsers() {
-        return userDao.getUsers();
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUsers());
     }
 
     @Override
-    public String newPassword() {
+    public ResponseEntity<String> newPassword() {
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
-        return uuidString.substring(0,8);
+        return ResponseEntity.status(HttpStatus.OK).body(uuidString.substring(0,8));
     }
 
     @Override
-    public User newUser() {
-        return userDao.newUser();
+    public ResponseEntity<User> newUser() {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.newUser());
     }
 
     @Override
-    public String save(User user) {
+    public ResponseEntity<String> save(User user) {
         userDao.saveUser(user);
         if(user.getPkId()>0)
         {
-            return "The user " + user.getFirstName() + " " + user.getLastName() + "has been saved";
+            return ResponseEntity.status(HttpStatus.OK).body("The user " + user.getName() + "has been saved");
         }
         else
         {
-            return "The user could not be saved";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The user could not be saved");
         }
     }
 
     @Override
-    public String isEmailUnique(String email) {
+    public ResponseEntity<String> isEmailUnique(String email) {
         if(userRepository.existsByEmailAddress(email))
         {
-            return "The email address " + email + " is registered to an existing account.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The email address " + email + " is registered to an existing account.");
         }
         else
         {
-            return "Email is unique";
+            return ResponseEntity.status(HttpStatus.OK).body("Email is unique");
         }
 
     }
 
     @Override
-    public String isUsernameUnique(String username) {
+    public ResponseEntity<String> isUsernameUnique(String username) {
         if(userRepository.existsByUsername(username))
         {
-            return "The email address " + username + " is registered to an existing account.";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The username " + username + " is registered to an existing account.");
         }
         else
         {
-            return "Email is unique";
+            return ResponseEntity.status(HttpStatus.OK).body("Username is unique");
         }
     }
 
     @Override
-    public String hashPassword(String pass) throws NoSuchAlgorithmException {
+    public ResponseEntity<String> hashPassword(String pass) throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
@@ -116,16 +117,16 @@ public class UserServiceImpl implements UserService{
         for(byte b : hashedBytes) {
             sb.append(String.format("%02x", b));
         }
-        return sb.toString();
+        return ResponseEntity.status(HttpStatus.OK).body(sb.toString());
     }
 
     @Override
-    public String validate(User user, String firstName, String lastName, String email, String password, String passwordConfirm) {
+    public ResponseEntity<String> validate(User user, String firstName, String lastName, String email, String password, String passwordConfirm) {
         return null;
     }
 
     @Override
-    public String checkPassword(User user, String currPassword, String newPassword, String retypePassword) {
+    public ResponseEntity<String> checkPassword(User user, String currPassword, String newPassword, String retypePassword) {
         return null;
     }
 

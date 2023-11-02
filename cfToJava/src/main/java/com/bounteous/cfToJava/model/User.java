@@ -30,4 +30,8 @@ public class User {
     public boolean isEmpty() {
         return (pkId == null);
     }
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
 }
