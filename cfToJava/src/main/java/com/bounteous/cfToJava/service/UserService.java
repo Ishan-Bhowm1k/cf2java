@@ -9,8 +9,8 @@ import java.util.List;
 public interface UserService {
     ResponseEntity<String> deleteUser(int id);
     ResponseEntity<User> getUser(int id);
-    ResponseEntity<User> getUserByCredentials(String username,String password);
-    ResponseEntity<User> getUserByEmailOrUsername(String data);
+    ResponseEntity<User> getUserByCredentials(User user);
+    ResponseEntity<User> getUserByEmailOrUsername(User user);
     ResponseEntity<List<User>> getUsers();
     ResponseEntity<String> newPassword();
     ResponseEntity<User> newUser();

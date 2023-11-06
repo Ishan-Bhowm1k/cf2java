@@ -26,14 +26,14 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @GetMapping("/user/{user}/{pass}")
-    public ResponseEntity<User> getUserByCredentials(@PathVariable String username, @PathVariable String password) {
-        return userService.getUserByCredentials(username,password);
+    @PostMapping("/user/creds/")
+    public ResponseEntity<User> getUserByCredentials(@RequestBody User user) {
+        return userService.getUserByCredentials(user);
     }
 
-    @GetMapping("/user/data/{data}")
-    ResponseEntity<User> getUserByEmailOrUsername(@PathVariable String data) {
-        return userService.getUserByEmailOrUsername(data);
+    @PostMapping("/user/data/")
+    ResponseEntity<User> getUserByEmailOrUsername(@RequestBody User user) {
+        return userService.getUserByEmailOrUsername(user);
     }
 
     @GetMapping("/user/users")

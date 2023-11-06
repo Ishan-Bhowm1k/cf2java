@@ -41,13 +41,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ResponseEntity<User> getUserByCredentials(String username, String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUserByCredentials(username,password));
+    public ResponseEntity<User> getUserByCredentials(User user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUserByCredentials(user));
     }
 
     @Override
-    public ResponseEntity<User> getUserByEmailOrUsername(String data) {
-        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUserByEmailOrUsername(data));
+    public ResponseEntity<User> getUserByEmailOrUsername(User user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userDao.getUserByEmailOrUsername(user));
     }
 
     @Override
@@ -122,12 +122,56 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public ResponseEntity<String> validate(User user, String firstName, String lastName, String email, String password, String passwordConfirm) {
-        return null;
+        String responseBody="";
+        ResponseEntity<String> responseEntity = ResponseEntity.status(HttpStatus.OK).body(responseBody);
+
+        if(user.getUsername().isEmpty() && user.getPassword().isEmpty())
+        {
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+            System.out.println("Please enter a new password for new user");
+        } else if(user.getPassword().isEmpty()) {
+            responseBody = String.valueOf(checkPassword(user,"null", password, passwordConfirm));
+        }
+
+        if(user.getFirstName().isEmpty() && firstName.isEmpty()) {
+            System.out.println("Please Enter the user's first name");
+            responseEntity =  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+
+        if(user.getLastName().isEmpty() && lastName.isEmpty()) {
+            System.out.println("Please enter user's last name");
+            responseEntity =  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+        
+        if(user.getEmailAddress().isEmpty() && email.isEmpty()) {
+            System.out.println("Please enter user's email address");
+            responseEntity =  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        } else if (userRepository.existsByEmailAddress(email)) {
+            System.out.println("This email already exists");
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+        return responseEntity;
     }
 
     @Override
     public ResponseEntity<String> checkPassword(User user, String currPassword, String newPassword, String retypePassword) {
-        return null;
+        String responseBody="";
+        ResponseEntity<String> responseEntity = ResponseEntity.status(HttpStatus.OK).body(responseBody);
+
+        if(newPassword.isEmpty() || retypePassword.isEmpty()) {
+            System.out.println("Please confirm password");
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+
+        if(currPassword.equals(newPassword)) {
+            System.out.println("The new password cant match your current password");
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+        if(!(newPassword.equals(retypePassword))) {
+            System.out.println("The new password do not match");
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+        return responseEntity;
     }
 
 }

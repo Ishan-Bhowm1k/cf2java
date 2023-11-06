@@ -46,12 +46,14 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User getUserByEmailOrUsername(String data) {
-        if(userRepository.existsByEmailAddress(data))
+    public User getUserByEmailOrUsername(User user) {
+        String email = user.getEmailAddress();
+        String username = user.getUsername();
+        if(userRepository.existsByEmailAddress(email))
         {
-            return userRepository.findUserByEmailAddress(data);
-        } else if (userRepository.existsByUsername(data)) {
-            return userRepository.findUserByUsername(data);
+            return userRepository.findUserByEmailAddress(email);
+        } else if (userRepository.existsByUsername(username)) {
+            return userRepository.findUserByUsername(username);
         }
         else {
             return null;
@@ -60,9 +62,9 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User getUserByCredentials(String user, String pass) {
+    public User getUserByCredentials(User user) {
         User user1 = getUserByEmailOrUsername(user);
-        if(user1.getPassword().equals(pass))
+        if(user1.getPassword().equals(user.getPassword()))
         {
             return user1;
         }
